@@ -7,13 +7,14 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="position" type="integer">
-      <gedmo:sortable groups="product"/>
+    <field name="position" type="integer" column="position">
+      <gedmo:sortable-position/>
     </field>
     <many-to-one field="product" target-entity="AppBundle\Entity\Sylius\Product" inversedBy="options" fetch="LAZY">
       <join-columns>
         <join-column name="product_id" referenced-column-name="id" nullable=""/>
       </join-columns>
+      <gedmo:sortable-group />
     </many-to-one>
     <many-to-one field="option" target-entity="AppBundle\Entity\Sylius\ProductOption" fetch="LAZY">
       <join-columns>

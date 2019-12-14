@@ -6,13 +6,14 @@
     </id>
     <field name="expression" type="text" column="expression"/>
     <field name="position" type="integer">
-      <gedmo:sortable groups="restaurant"/>
+      <gedmo:sortable-position/>
     </field>
     <field name="time" type="string" column="time"/>
     <many-to-one field="restaurant" target-entity="AppBundle\Entity\Restaurant" inversed-by="preparationTimeRules" fetch="LAZY">
       <join-columns>
         <join-column name="restaurant_id" referenced-column-name="id" on-delete="SET NULL"/>
       </join-columns>
+      <gedmo:sortable-group />
     </many-to-one>
   </entity>
 </doctrine-mapping>
