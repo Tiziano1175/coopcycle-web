@@ -60,6 +60,7 @@
         <option name="default">false</option>
       </options>
     </field>
+    <gedmo:soft-deleteable field-name="deletedAt" time-aware="false" hard-delete="false" />
     <one-to-one field="contract" target-entity="AppBundle\Entity\Contract" mapped-by="restaurant" fetch="LAZY">
       <cascade>
         <cascade-persist/>
