@@ -8,19 +8,19 @@ base.footer.suggest: 'Suggerisci un ristorante'
 adminDashboard.title: 'Pannello di amministrazione'
 adminDashboard.configuration: Configurazione
 adminDashboard.tooltip.orders: 'Gestisci gli ordini dei ristoranti'
-adminDashboard.tooltip.deliveries: Manage deliveries
-adminDashboard.tooltip.stores: Manage stores
-adminDashboard.tooltip.restaurants: Manage restaurants
-adminDashboard.tooltip.users: Manage user accounts
+adminDashboard.tooltip.deliveries: Gestisci le consegne
+adminDashboard.tooltip.stores: Gestisci i negozi
+adminDashboard.tooltip.restaurants: Gestisci i ristoranti
+adminDashboard.tooltip.users: Gestisci gli utenti
 adminDashboard.dashboard.title: Dashboard
 adminDashboard.dashboard.import: Import
 adminDashboard.dashboard.export: Export
 adminDashboard.dashboard.importTasks: Import tasks
 adminDashboard.dashboard.exportTasks: Export tasks
-adminDashboard.dashboard.deleteTaskGroup: Delete task group
-adminDashboard.dashboard.displayByGroups: Display by groups
-adminDashboard.dashboard.displayAll: Display all
-adminDashboard.dashboard.cancel: Cancel
+adminDashboard.dashboard.deleteTaskGroup: Cancella task group
+adminDashboard.dashboard.displayByGroups: Vista di gruppo
+adminDashboard.dashboard.displayAll: Vedi tutti
+adminDashboard.dashboard.cancel: Cancella
 adminDashboard.deliveries.title: Deliveries
 adminDashboard.deliveries.type: Type
 adminDashboard.deliveries.dueDate: Due date
