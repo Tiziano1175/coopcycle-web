@@ -56,9 +56,17 @@ adminDashboard.stores.form.uploadImage: Upload an image
 adminDashboard.orders.title: Orders
 adminDashboard.orders.previousOrders: Previous orders
 adminDashboard.orders.showCanceled: Show canceled orders
-adminDashboard.restaurants.title: Restaurants
-adminDashboard.restaurants.createNew: Create a new restaurant
+
+adminDashboard.restaurants.title: Ristoranti
+adminDashboard.restaurants.createNew: Crea nuovo ristorante
 adminDashboard.restaurants.exclusive: Exclusive
+
+
+adminDashboard.restaurants.categories.title: Categorie
+adminDashboard.restaurants.categories.createNew: Crea nuova categoria
+adminDashboard.restaurants.categories.exclusive: Exclusive
+
+
 adminDashboard.users.title: Users
 adminDashboard.users.edit: Edit
 adminDashboard.users.roles: Roles
@@ -149,7 +157,8 @@ restaurant.form.temporaryClosingRule: If you wish to close temporarily your rest
   follow this link
 restaurant.form.deposit_refund_enabled.label: Enable deposit-refund system
 restaurant.form.accessPlanning: Access planning
-restaurant.form.createRestaurant: Create restaurant
+restaurant.form.createRestaurant: Crea ristorante
+restaurant.category.form.createRestaurantCategory: Crea categoria
 restaurant.form.save: Save
 restaurant.form.exclusive.label: This restaurant is exclusive
 restaurant.form.quotes_allowed.label: "This restaurant also accepts quotes (ex: catering)"
@@ -196,6 +205,21 @@ restaurant.list.createNewRestaurant: Create a new restaurant
 restaurant.list.preparationTime: Preparation
 restaurant.list.stats: Statistics
 restaurant.list.depositRefund: Deposit-refund
+
+restaurant.category.list.manage: Manage
+restaurant.category.list.orders: Orders
+restaurant.category.list.products: Products
+restaurant.category.list.product_options: Options
+restaurant.category.list.menus: Menus
+restaurant.category.list.activeMenu: Active menu
+restaurant.category.list.planning: Planning
+restaurant.category.list.settings: Settings
+restaurant.category.list.norestaurant: Non sono presenti categorie
+restaurant.category.list.createNewRestaurant: Crea una nuova categoria
+restaurant.category.list.preparationTime: Preparation
+restaurant.category.list.stats: Statistics
+restaurant.category.list.depositRefund: Deposit-refund
+
 restaurant.product_options.help: 'Options all products to be <strong>configurable</strong>
 
   <br>
