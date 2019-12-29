@@ -128,6 +128,15 @@ class RestaurantRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findByCategoryId(int $categoryId)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.category = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByCustomer(UserInterface $customer)
     {
         $qb = $this->createQueryBuilder('r');
