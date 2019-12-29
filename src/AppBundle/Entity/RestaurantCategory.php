@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Timestampable\Traits\Timestampable;
 
 class RestaurantCategory
@@ -13,6 +14,22 @@ class RestaurantCategory
     protected $name;
 
     protected $description;
+
+    /**
+     * @var Restaurant
+     */
+    protected $restaurants;
+
+    public function __construct()
+    {
+        $this->restaurants = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
 
     /**
      * @return mixed
@@ -62,5 +79,13 @@ class RestaurantCategory
         $this->description = $description;
     }
 
+    public function getRestaurants()
+    {
+        return $this->restaurants;
+    }
 
+    public function addRestaurant(Restaurant $restaurant)
+    {
+        $this->restaurants->add($restaurant);
+    }
 }

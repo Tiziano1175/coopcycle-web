@@ -24,3 +24,9 @@ AppBundle\Entity\RestaurantCategory:
         description:
             type: text
             nullable: true
+    oneToMany:
+      restaurants:
+        targetEntity: AppBundle\Entity\Restaurant
+        mappedBy: category
+        cascade:
+          - all
