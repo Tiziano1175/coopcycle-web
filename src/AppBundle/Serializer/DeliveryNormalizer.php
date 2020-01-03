@@ -10,7 +10,7 @@ use AppBundle\Entity\Delivery;
 use AppBundle\Entity\Package;
 use AppBundle\Entity\Task;
 use AppBundle\Service\Geocoder;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -111,9 +111,14 @@ class DeliveryNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $address = $this->normalizer->denormalize($data, Address::class, $format);
 
-        if (null === $address->getGeo() && isset($data['latLng'])) {
-            [ $latitude, $longitude ] = $data['latLng'];
-            $address->setGeo(new GeoCoordinates($latitude, $longitude));
+        if (null === $address->getGeo()) {
+            if (isset($data['latLng'])) {
+                [ $latitude, $longitude ] = $data['latLng'];
+                $address->setGeo(new GeoCoordinates($latitude, $longitude));
+            } else {
+                $geocoded = $this->geocoder->geocode($address->getStreetAddress());
+                $address->setGeo($geocoded->getGeo());
+            }
         }
 
         return $address;

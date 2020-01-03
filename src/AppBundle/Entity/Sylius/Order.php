@@ -6,12 +6,17 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use AppBundle\Action\Cart\AddItem as AddCartItem;
+use AppBundle\Action\Cart\DeleteItem as DeleteCartItem;
+use AppBundle\Action\Cart\UpdateItem as UpdateCartItem;
 use AppBundle\Action\Order\Accept as OrderAccept;
+use AppBundle\Action\Order\Assign as OrderAssign;
 use AppBundle\Action\Order\Cancel as OrderCancel;
 use AppBundle\Action\Order\Delay as OrderDelay;
 use AppBundle\Action\Order\Pay as OrderPay;
 use AppBundle\Action\Order\Refuse as OrderRefuse;
 use AppBundle\Action\MyOrders;
+use AppBundle\Api\Dto\CartItemInput;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\ApiUser;
 use AppBundle\Entity\Delivery;
@@ -20,6 +25,7 @@ use AppBundle\Filter\OrderDateFilter;
 use AppBundle\Sylius\Order\AdjustmentInterface;
 use AppBundle\Sylius\Order\OrderInterface;
 use AppBundle\Sylius\Order\OrderItemInterface;
+use AppBundle\Validator\Constraints\IsOrderModifiable as AssertOrderIsModifiable;
 use AppBundle\Validator\Constraints\Order as AssertOrder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -91,6 +97,62 @@ use Sylius\Component\Taxation\Model\TaxRateInterface;
  *       "path"="/orders/{id}/cancel",
  *       "controller"=OrderCancel::class,
  *       "access_control"="is_granted('ROLE_RESTAURANT') and user.ownsRestaurant(object.getRestaurant())"
+ *     },
+ *     "assign"={
+ *       "method"="PUT",
+ *       "path"="/orders/{id}/assign",
+ *       "controller"=OrderAssign::class,
+ *       "validation_groups"={"cart"},
+ *       "normalization_context"={"groups"={"cart"}}
+ *     },
+ *     "get_cart_timing"={
+ *       "method"="GET",
+ *       "path"="/orders/{id}/timing",
+ *       "access_control"="object.getCustomer() == user"
+ *     },
+ *     "validate"={
+ *       "method"="GET",
+ *       "path"="/orders/{id}/validate",
+ *       "normalization_context"={"groups"={"cart"}},
+ *       "access_control"="object.getCustomer() == user"
+ *     },
+ *     "put_cart"={
+ *       "method"="PUT",
+ *       "path"="/orders/{id}",
+ *       "validation_groups"={"cart"},
+ *       "normalization_context"={"groups"={"cart"}},
+ *       "denormalization_context"={"groups"={"order_update"}},
+ *       "security"="(object.getCustomer() != null and object.getCustomer() == user) or (cart_session.cart != null and cart_session.cart.getId() == object.getId())"
+ *     },
+ *     "post_cart_items"={
+ *       "method"="POST",
+ *       "path"="/orders/{id}/items",
+ *       "input"=CartItemInput::class,
+ *       "controller"=AddCartItem::class,
+ *       "validation_groups"={"cart"},
+ *       "denormalization_context"={"groups"={"cart"}},
+ *       "normalization_context"={"groups"={"cart"}},
+ *       "security"="(object.getCustomer() != null and object.getCustomer() == user) or (cart_session.cart != null and cart_session.cart.getId() == object.getId())"
+ *     },
+ *     "put_item"={
+ *       "method"="PUT",
+ *       "path"="/orders/{id}/items/{itemId}",
+ *       "controller"=UpdateCartItem::class,
+ *       "validation_groups"={"cart"},
+ *       "denormalization_context"={"groups"={"cart"}},
+ *       "normalization_context"={"groups"={"cart"}},
+ *       "security"="(object.getCustomer() != null and object.getCustomer() == user) or (cart_session.cart != null and cart_session.cart.getId() == object.getId())"
+ *     },
+ *     "delete_item"={
+ *       "method"="DELETE",
+ *       "path"="/orders/{id}/items/{itemId}",
+ *       "controller"=DeleteCartItem::class,
+ *       "validation_groups"={"cart"},
+ *       "normalization_context"={"groups"={"cart"}},
+ *       "validate"=false,
+ *       "write"=false,
+ *       "status"=200,
+ *       "security"="(object.getCustomer() != null and object.getCustomer() == user) or (cart_session.cart != null and cart_session.cart.getId() == object.getId())"
  *     }
  *   },
  *   attributes={
@@ -100,7 +162,8 @@ use Sylius\Component\Taxation\Model\TaxRateInterface;
  * )
  * @ApiFilter(OrderDateFilter::class, properties={"date": "exact"})
  *
- * @AssertOrder
+ * @AssertOrder(groups={"Default"})
+ * @AssertOrderIsModifiable(groups={"cart"})
  */
 class Order extends BaseOrder implements OrderInterface
 {

@@ -125,6 +125,40 @@ Feature: Stores
       }
       """
 
+  Scenario: Retrieve store with OAuth
+    Given the fixtures files are loaded:
+      | sylius_channels.yml |
+      | stores.yml          |
+    Given the store with name "Acme" has an OAuth client named "Acme"
+    And the OAuth client with name "Acme" has an access token
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And the OAuth client "Acme" sends a "GET" request to "/api/stores/1"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should match:
+      """
+      {
+        "@context":"/api/contexts/Store",
+        "@id":"/api/stores/1",
+        "@type":"http://schema.org/Store",
+        "name":"Acme",
+        "enabled":true,
+        "address":{
+          "@id":"/api/addresses/1",
+          "@type":"http://schema.org/Place",
+          "geo":{
+            "latitude":48.864577,
+            "longitude":2.333338
+          },
+          "streetAddress":"272, rue Saint Honoré 75001 Paris 1er",
+          "telephone":null,
+          "name":null
+        },
+        "timeSlot":"/api/time_slots/1"
+      }
+      """
+
   Scenario: Retrieve time slot with choices
     Given the fixtures files are loaded:
       | sylius_channels.yml |
@@ -174,7 +208,66 @@ Feature: Stores
     And the user "bob" sends a "GET" request to "/api/time_slots/2"
     Then the response status code should be 200
     And the response should be in JSON
-    And print last response
+    And the JSON should match:
+      """
+      {
+        "@context":"/api/contexts/TimeSlot",
+        "@id":"/api/time_slots/2",
+        "@type":"TimeSlot",
+        "name":"Time slot with opening hours",
+        "choices":[],
+        "interval":"2 days",
+        "workingDaysOnly":false,
+        "openingHoursSpecification":[
+          {
+            "@type":"OpeningHoursSpecification",
+            "opens":"10:00",
+            "closes":"11:00",
+            "dayOfWeek":[
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday"
+            ]
+          },
+          {
+            "@type":"OpeningHoursSpecification",
+            "opens":"11:00",
+            "closes":"13:00",
+            "dayOfWeek":[
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday"
+            ]
+          },
+          {
+            "@type":"OpeningHoursSpecification",
+            "opens":"14:00",
+            "closes":"15:00",
+            "dayOfWeek":[
+              "Sunday"
+            ]
+          }
+        ]
+      }
+      """
+
+  Scenario: Retrieve time slot with opening hours with OAuth
+    Given the fixtures files are loaded:
+      | sylius_channels.yml |
+      | stores.yml          |
+    Given the store with name "Acme" has an OAuth client named "Acme"
+    And the OAuth client with name "Acme" has an access token
+    When I add "Content-Type" header equal to "application/ld+json"
+    And I add "Accept" header equal to "application/ld+json"
+    And the OAuth client "Acme" sends a "GET" request to "/api/time_slots/2"
+    Then the response status code should be 200
+    And the response should be in JSON
     And the JSON should match:
       """
       {
