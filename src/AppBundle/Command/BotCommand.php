@@ -7,7 +7,7 @@ use AppBundle\Entity\Bot;
 use AppBundle\Entity\TaskList;
 use AppBundle\Service\RoutingInterface;
 use AppBundle\Service\SettingsManager;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use GuzzleHttp\Client as HttpClient;
 use League\Geotools\Coordinate\Coordinate;
@@ -29,7 +29,7 @@ class BotCommand extends DaemonCommand
     private $settingsManager;
 
     public function __construct(
-        ObjectManager $doctrine,
+        EntityManagerInterface $doctrine,
         UserManagerInterface $userManager,
         JWTTokenManagerInterface $tokenManager,
         RoutingInterface $routing,
@@ -55,7 +55,7 @@ class BotCommand extends DaemonCommand
             ->setDescription('Run bots.');
     }
 
-    protected function setup(InputInterface $input, OutputInterface $output)
+    protected function setup(InputInterface $input, OutputInterface $output): void
     {
         // Set up your daemon here
         $this->io = new SymfonyStyle($input, $output);
